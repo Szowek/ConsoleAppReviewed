@@ -27,6 +27,11 @@
             for (int i = 0; i <= importedLines.Count; i++)
             {
                 var importedLine = importedLines[i];
+
+                // the loop throws an error because the line is blank, included below check to skip said lines
+                if (importedLine == "")
+                    continue;
+
                 var values = importedLine.Split(';');
                 var importedObject = new ImportedObject();
                 importedObject.Type = values[0];
