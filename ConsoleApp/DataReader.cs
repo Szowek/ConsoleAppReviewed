@@ -24,15 +24,25 @@
                 importedLines.Add(line);
             }
 
-            for (int i = 0; i <= importedLines.Count; i++)
+            for (int i = 0; i < importedLines.Count; i++) // changed the executing condition operator from <= to < to prevent reading out of range lines
             {
                 var importedLine = importedLines[i];
 
-                // the loop throws an error because the line is blank, included below check to skip said lines
-                if (importedLine == "")
+                if (string.IsNullOrWhiteSpace(importedLine)) // the loop throws an error because the line is blank, included below check to skip said lines
                     continue;
 
                 var values = importedLine.Split(';');
+
+                if (values.Length < 7) // a check if the imported line lacks some fields
+                {
+                    int missingFields = 7 - values.Length;
+                    Array.Resize(ref values, 7);
+                    for (int j = values.Length - missingFields; j < values.Length; j++)
+                    {
+                        values[j] = ""; // insert blank properties into missing fields
+                    }
+                }
+
                 var importedObject = new ImportedObject();
                 importedObject.Type = values[0];
                 importedObject.Name = values[1];
