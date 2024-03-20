@@ -13,7 +13,7 @@
 
         public void ImportAndPrintData(string fileToImport, bool printData = true)
         {
-            ImportedObjects = new List<ImportedObject>() { new ImportedObject() };
+            ImportedObjects = new List<ImportedObject>() {}; // deleted initialization of first null object "new ImportedObject()" due to an error in imported data clear loop further below
 
             var streamReader = new StreamReader(fileToImport);
 
