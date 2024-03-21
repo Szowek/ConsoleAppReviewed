@@ -101,7 +101,7 @@
                     // print all database's tables
                     foreach (var table in objectList)
                     {
-                        // Another batch of nested ifs that were present below merged
+                        // Another batch of nested ifs that were present below has been merged
                         if (table.ParentType == database.Type && table.ParentName == database.Name)
                         {
                             Console.WriteLine($"\tTable '{table.Schema}.{table.Name}' ({table.NumberOfChildren} columns)");
