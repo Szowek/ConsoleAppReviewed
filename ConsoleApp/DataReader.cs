@@ -60,12 +60,15 @@
                 /*
                  * Added .ToUpper() in ParentType to avoid the need to use the method multiple
                  * times when its compared against other properties in if statements below.
+                 * 
+                 * Additionaly I've created extension for string in order to use it in properties
+                 * below to reduce repeatability of the code and simply make it more readable.
                  */
-                importedObject.Type = importedObject.Type.Trim().Replace(" ", "").Replace(Environment.NewLine, "").ToUpper();
-                importedObject.Name = importedObject.Name.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
-                importedObject.Schema = importedObject.Schema.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
-                importedObject.ParentName = importedObject.ParentName.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
-                importedObject.ParentType = importedObject.ParentType.Trim().Replace(" ", "").Replace(Environment.NewLine, "").ToUpper();
+                importedObject.Type = importedObject.Type.ClearData().ToUpper();
+                importedObject.Name = importedObject.Name.ClearData();
+                importedObject.Schema = importedObject.Schema.ClearData();
+                importedObject.ParentName = importedObject.ParentName.ClearData();
+                importedObject.ParentType = importedObject.ParentType.ClearData().ToUpper();
             }
 
             // assign number of children
@@ -110,6 +113,15 @@
             }
 
             Console.ReadLine();
+        }
+    }
+
+    // String extension responsible for clearing imported data
+    public static class StringExtensions
+    {
+        public static string ClearData(this string input)
+        {
+            return input.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
         }
     }
 
