@@ -28,7 +28,7 @@
             {
                 var importedLine = importedLines[i];
 
-                if (string.IsNullOrWhiteSpace(importedLine)) // the loop throws an error because the line is blank, included below check to skip said lines
+                if (string.IsNullOrWhiteSpace(importedLine)) // the loop throws an error if the line is blank, this check skips said lines
                     continue;
 
                 var values = importedLine.Split(';');
@@ -43,33 +43,36 @@
                     }
                 }
 
-                var importedObject = new ImportedObject();
-                importedObject.Type = values[0];
-                importedObject.Name = values[1];
-                importedObject.Schema = values[2];
-                importedObject.ParentName = values[3];
-                importedObject.ParentType = values[4];
-                importedObject.DataType = values[5];
-                importedObject.IsNullable = values[6];
-                ((List<ImportedObject>)ImportedObjects).Add(importedObject);
-            }
-
-            // clear and correct imported data
-            foreach (var importedObject in ImportedObjects)
-            {
                 /*
+                 * Merged functionalities of clear&correct imported data foreach loop into
+                 * this one, for better optimalization.
+                 * 
                  * Added .ToUpper() in ParentType to avoid the need to use the method multiple
                  * times when its compared against other properties in if statements below.
                  * 
                  * Additionaly I've created extension for string in order to use it in properties
                  * below to reduce repeatability of the code and simply make it more readable.
                  */
-                importedObject.Type = importedObject.Type.ClearData().ToUpper();
-                importedObject.Name = importedObject.Name.ClearData();
-                importedObject.Schema = importedObject.Schema.ClearData();
-                importedObject.ParentName = importedObject.ParentName.ClearData();
-                importedObject.ParentType = importedObject.ParentType.ClearData().ToUpper();
+                var importedObject = new ImportedObject();
+                importedObject.Type = values[0].ClearData().ToUpper();
+                importedObject.Name = values[1].ClearData();
+                importedObject.Schema = values[2].ClearData();
+                importedObject.ParentName = values[3].ClearData();
+                importedObject.ParentType = values[4].ClearData().ToUpper();
+                importedObject.DataType = values[5];
+                importedObject.IsNullable = values[6];
+                ((List<ImportedObject>)ImportedObjects).Add(importedObject);
             }
+
+            // clear and correct imported data
+            //foreach (var importedObject in ImportedObjects)
+            //{
+            //    importedObject.Type = importedObject.Type.ClearData().ToUpper();
+            //    importedObject.Name = importedObject.Name.ClearData();
+            //    importedObject.Schema = importedObject.Schema.ClearData();
+            //    importedObject.ParentName = importedObject.ParentName.ClearData();
+            //    importedObject.ParentType = importedObject.ParentType.ClearData().ToUpper();
+            //}
 
             // assign number of children
             for (int i = 0; i < ImportedObjects.Count(); i++)
@@ -132,7 +135,6 @@
      * It is better to use the same style for the whole code as it
      * makes it easier to read and review.
      */
-
     class ImportedObject : ImportedObjectBaseClass
     {
         public string Name { get; set; }
