@@ -116,22 +116,24 @@
         }
     }
 
+    /*
+     * Adjusted spaced and lines in below ImportedObject class for
+     * better readability and cleaner code. 
+     * Previously some properties had different writing convention.
+     * It is better to use the same style for the whole code as it
+     * makes it easier to read and review.
+     */
+
     class ImportedObject : ImportedObjectBaseClass
     {
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
         public string Schema;
 
         public string ParentName;
-        public string ParentType
-        {
-            get; set;
-        }
+        public string ParentType { get; set; }
 
         public string DataType { get; set; }
+
         public string IsNullable { get; set; }
 
         public double NumberOfChildren;
