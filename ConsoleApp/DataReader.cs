@@ -57,11 +57,15 @@
             // clear and correct imported data
             foreach (var importedObject in ImportedObjects)
             {
+                /*
+                 * Added .ToUpper() in ParentType to avoid the need to use the method multiple
+                 * times when its compared against other properties in if statements below.
+                 */
                 importedObject.Type = importedObject.Type.Trim().Replace(" ", "").Replace(Environment.NewLine, "").ToUpper();
                 importedObject.Name = importedObject.Name.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
                 importedObject.Schema = importedObject.Schema.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
                 importedObject.ParentName = importedObject.ParentName.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
-                importedObject.ParentType = importedObject.ParentType.Trim().Replace(" ", "").Replace(Environment.NewLine, "");
+                importedObject.ParentType = importedObject.ParentType.Trim().Replace(" ", "").Replace(Environment.NewLine, "").ToUpper();
             }
 
             // assign number of children
@@ -88,14 +92,14 @@
                     foreach (var table in ImportedObjects)
                     {
                         // Another batch of nested ifs that were present below merged
-                        if (table.ParentType.ToUpper() == database.Type && table.ParentName == database.Name)
+                        if (table.ParentType == database.Type && table.ParentName == database.Name)
                         {
                             Console.WriteLine($"\tTable '{table.Schema}.{table.Name}' ({table.NumberOfChildren} columns)");
 
                             // print all table's columns
                             foreach (var column in ImportedObjects)
                             {
-                                if (column.ParentType.ToUpper() == table.Type && column.ParentName == table.Name)
+                                if (column.ParentType == table.Type && column.ParentName == table.Name)
                                 {
                                     Console.WriteLine($"\t\tColumn '{column.Name}' with {column.DataType} data type {(column.IsNullable == "1" ? "accepts nulls" : "with no nulls")}");
                                 }
