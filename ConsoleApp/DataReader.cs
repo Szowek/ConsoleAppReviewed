@@ -43,7 +43,7 @@
                     Array.Resize(ref values, 7);
                     for (int j = values.Length - missingFields; j < values.Length; j++)
                     {
-                        values[j] = ""; // insert blank properties into missing fields
+                        values[j] = ""; // insert blank string into missing fields
                     }
                 }
 
@@ -82,7 +82,7 @@
             for (int i = 0; i < objectList.Count(); i++)
             {
                 var importedObject = objectList.ToArray()[i];
-                foreach (var obj in objectList) // renamed impObj to obj for better clarity and avoid confusion with similary named variables
+                foreach (var obj in objectList) // renamed impObj to obj for better clarity and to avoid confusion with similary named variables
                 {
                     // Merged nested ifs into a single one for better readability
                     if (obj.ParentType == importedObject.Type && obj.ParentName == importedObject.Name)
@@ -135,13 +135,16 @@
     /*
      * Adjusted spaced and lines in below ImportedObject class for
      * better readability and cleaner code. 
-     * Previously some properties had different writing convention.
-     * It is better to use the same style for the whole code as it
-     * makes it easier to read and review.
+     * 
+     * Previously some properties or fields had different writing convention.
+     * It is better to use the same style for the whole code as it makes it
+     * easier to read and review.
      */
     class ImportedObject : ImportedObjectBaseClass
     {
-        public string Name { get; set; }
+        // commented out the property below as it's already inherited from ImportedObjectBaseClass
+
+        // public string Name { get; set; }
         public string Schema;
 
         public string ParentName;
