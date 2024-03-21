@@ -9,11 +9,15 @@
 
     public class DataReader
     {
-        IEnumerable<ImportedObject> ImportedObjects;
+        /*
+         * Renamed ImportedObjects to objectList, to follow lower camel case 
+         * naming convention and make variables more distinct from each other
+         */
+        IEnumerable<ImportedObject> objectList;
 
         public void ImportAndPrintData(string fileToImport, bool printData = true)
         {
-            ImportedObjects = new List<ImportedObject>() {}; // deleted initialization of first null object "new ImportedObject()" due to an error in imported data clear loop further below
+            objectList = new List<ImportedObject>() {}; // deleted initialization of first null object "new ImportedObject()" due to an error in imported data clear loop further below
 
             var streamReader = new StreamReader(fileToImport);
 
@@ -61,11 +65,11 @@
                 importedObject.ParentType = values[4].ClearData().ToUpper();
                 importedObject.DataType = values[5];
                 importedObject.IsNullable = values[6];
-                ((List<ImportedObject>)ImportedObjects).Add(importedObject);
+                ((List<ImportedObject>)objectList).Add(importedObject);
             }
 
             // clear and correct imported data
-            //foreach (var importedObject in ImportedObjects)
+            //foreach (var importedObject in importedObjects)
             //{
             //    importedObject.Type = importedObject.Type.ClearData().ToUpper();
             //    importedObject.Name = importedObject.Name.ClearData();
@@ -75,27 +79,27 @@
             //}
 
             // assign number of children
-            for (int i = 0; i < ImportedObjects.Count(); i++)
+            for (int i = 0; i < objectList.Count(); i++)
             {
-                var importedObject = ImportedObjects.ToArray()[i];
-                foreach (var impObj in ImportedObjects)
+                var importedObject = objectList.ToArray()[i];
+                foreach (var obj in objectList) // renamed impObj to obj for better clarity and avoid confusion with similary named variables
                 {
                     // Merged nested ifs into a single one for better readability
-                    if (impObj.ParentType == importedObject.Type && impObj.ParentName == importedObject.Name)
+                    if (obj.ParentType == importedObject.Type && obj.ParentName == importedObject.Name)
                     {
                         importedObject.NumberOfChildren = 1 + importedObject.NumberOfChildren;
                     }
                 }
             }
 
-            foreach (var database in ImportedObjects)
+            foreach (var database in objectList)
             {
                 if (database.Type == "DATABASE")
                 {
                     Console.WriteLine($"Database '{database.Name}' ({database.NumberOfChildren} tables)");
 
                     // print all database's tables
-                    foreach (var table in ImportedObjects)
+                    foreach (var table in objectList)
                     {
                         // Another batch of nested ifs that were present below merged
                         if (table.ParentType == database.Type && table.ParentName == database.Name)
@@ -103,7 +107,7 @@
                             Console.WriteLine($"\tTable '{table.Schema}.{table.Name}' ({table.NumberOfChildren} columns)");
 
                             // print all table's columns
-                            foreach (var column in ImportedObjects)
+                            foreach (var column in objectList)
                             {
                                 if (column.ParentType == table.Type && column.ParentName == table.Name)
                                 {
