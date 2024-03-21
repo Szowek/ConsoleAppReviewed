@@ -32,9 +32,6 @@
             {
                 var importedLine = importedLines[i];
 
-                if (string.IsNullOrWhiteSpace(importedLine)) // the loop throws an error if the line is blank, this check skips said lines
-                    continue;
-
                 var values = importedLine.Split(';');
 
                 if (values.Length < 7) // a check if the imported line lacks some fields
